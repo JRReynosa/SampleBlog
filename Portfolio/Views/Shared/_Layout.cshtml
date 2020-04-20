@@ -1,9 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://kit.fontawesome.com/df8cbb7f66.js" crossorigin="anonymous"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Portfolio</title>
+    <title>@ViewData["Title"] - Jonathan Reynosa</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Portfolio</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Jonathan Reynosa</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,9 +23,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About Me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Work">My Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact Me</a>
                         </li>
                     </ul>
+                </div>
+                <div class="nav justify-content-center">
+                    <a class="nav-link" href="https://www.facebook.com">
+                        <i class="fab fa-facebook" style="font-size: 25px; color: black;"></i>
+                    </a>
+                    <a class="nav-link" href="https://www.twitter.com">
+                        <i class="fab fa-twitter " style="font-size: 25px; color: black;"></i>
+                    </a>
+                    <a class="nav-link" href="https://www.instagram.com">
+                        <i class="fab fa-instagram" style="font-size: 25px; color: black;"></i>
+                    </a>
                 </div>
             </div>
         </nav>
