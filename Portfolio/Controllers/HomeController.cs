@@ -25,17 +25,17 @@ namespace Portfolio.Controllers
 
         public IActionResult About()
         {
-            return View();
+            return View("~/Views/About/Index.cshtml");
         }
 
         public IActionResult Work()
         {
-            return View();
+            return View("~/Views/Work/Index.cshtml");
         }
 
         public IActionResult Contact()
         {
-            return View();
+            return View("~/Views/Contact/Index.cshtml");
         }
 
         public IActionResult Privacy()
