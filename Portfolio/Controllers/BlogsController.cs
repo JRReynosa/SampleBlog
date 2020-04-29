@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,46 +9,40 @@ using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
 using Portfolio.Models;
 using Portfolio.Services;
+using Portfolio.ViewModels;
 
 namespace Portfolio.Controllers
 {
     public class BlogsController : Controller
     {
-        // take out once done configuring services methods
-        private readonly PortfolioContext _context;
-
-        public BlogsController(PortfolioContext context)
-        {
-            _context = context;
-        }
-
         // GET: Blogs
         public ActionResult Index()
         {
             var viewModel = new BlogService().RetrieveBlogs();
+
             return View(viewModel);
         }
 
         // GET: Blogs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var blog = await _context.Blog
-                .FirstOrDefaultAsync(m => m.BlogID == id);
-            if (blog == null)
+            var viewModel = new BlogService().RetrieveBlogVmById(id);
+
+            if (viewModel == null)
             {
                 return NotFound();
             }
 
-            return View(blog);
+            return View(viewModel);
         }
 
         // GET: Blogs/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
@@ -57,31 +52,33 @@ namespace Portfolio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogID,CreationDate,Title,Content,Tags")] Blog blog)
+        public ActionResult Create(BlogViewModel blogViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(blog);
-                await _context.SaveChangesAsync();
+                new BlogService().CreateBlog(blogViewModel);
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(blog);
+            return View(blogViewModel);
         }
 
         // GET: Blogs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var blog = await _context.Blog.FindAsync(id);
-            if (blog == null)
+            var viewModel = new BlogService().RetrieveBlogVmById(id);
+
+            if (viewModel == null)
             {
                 return NotFound();
             }
-            return View(blog);
+
+            return View(viewModel);
         }
 
         // POST: Blogs/Edit/5
@@ -89,7 +86,7 @@ namespace Portfolio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BlogID,CreationDate,Title,Content,Tags")] Blog blog)
+        public ActionResult Edit(int id, BlogViewModel blog)
         {
             if (id != blog.BlogID)
             {
@@ -98,59 +95,44 @@ namespace Portfolio.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(blog);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BlogExists(blog.BlogID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var blogAdded = new BlogService().EditBlog(id, blog);
+
+                if (!blogAdded) return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
                 return RedirectToAction(nameof(Index));
+                
             }
             return View(blog);
         }
 
         // GET: Blogs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var blog = await _context.Blog
-                .FirstOrDefaultAsync(m => m.BlogID == id);
-            if (blog == null)
+            var viewModel = new BlogService().RetrieveBlogVmById(id);
+
+            if (viewModel == null)
             {
                 return NotFound();
             }
 
-            return View(blog);
+            return View(viewModel);
         }
 
         // POST: Blogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            var blog = await _context.Blog.FindAsync(id);
-            _context.Blog.Remove(blog);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            var blogDeleted = new BlogService().DeleteBlogById(id);
 
-        private bool BlogExists(int id)
-        {
-            return _context.Blog.Any(e => e.BlogID == id);
+            if (!blogDeleted) return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

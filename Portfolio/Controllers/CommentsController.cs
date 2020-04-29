@@ -12,6 +12,7 @@ namespace Portfolio.Controllers
 {
     public class CommentsController : Controller
     {
+        // take out once done configuring services methods
         private readonly PortfolioContext _context;
 
         public CommentsController(PortfolioContext context)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
 using Portfolio.Models;
 using Portfolio.ViewModels;
@@ -12,9 +13,10 @@ namespace Portfolio.Services
     {
         public List<BlogViewModel> RetrieveBlogs()
         {
-            var listOfAudits = new List<BlogViewModel>();
-            var query = new PortfolioContext().Blog.ToList();
-            listOfAudits = query.Select(x => new BlogViewModel
+            var context = new PortfolioContext();
+            var listOfBlogs = new List<BlogViewModel>();
+            var query = context.Blog.ToList();
+            listOfBlogs = query.Select(x => new BlogViewModel
             {
                 BlogID = x.BlogID,
                 DateSubmitted = x.SystemChangeDate,
@@ -23,13 +25,21 @@ namespace Portfolio.Services
                 Tags = x.Tags,
                 Comments = this.RetrieveComments(x.BlogID)
             }).ToList();
-            return listOfAudits;
+            return listOfBlogs;
+        }
+
+        public BlogViewModel RetrieveBlogVmById(int? id)
+        {
+            var listOfVmBlogs = new BlogService().RetrieveBlogs();
+            var returnBlog = listOfVmBlogs.FirstOrDefault(x => x.BlogID == id);
+            return returnBlog;
         }
 
         public List<CommentViewModel> RetrieveComments(int blogId)
         {
+            var context = new PortfolioContext();
             var listOfComments = new List<CommentViewModel>();
-            var query = new PortfolioContext().Comment.ToList();
+            var query = context.Comment.ToList();
             listOfComments = query.Where(x => x.BlogID == blogId).Select(x => new CommentViewModel
             {
                 CommentId = x.CommentId,
@@ -41,6 +51,56 @@ namespace Portfolio.Services
                 Likes = x.Likes
             }).ToList();
             return listOfComments;
+        }
+
+        public bool CreateBlog(BlogViewModel blog)
+        {
+            var context = new PortfolioContext();
+            var entryBlog = new Blog
+            {
+                BlogID = blog.BlogID,
+                SystemChangeDate = blog.DateSubmitted,
+                Title = blog.Title,
+                Content = blog.Content,
+                Tags = blog.Tags
+            };
+            context.Add(entryBlog);
+            context.SaveChanges();
+
+            if (new BlogService().RetrieveBlogVmById(blog.BlogID) == null) return false;
+            return true;
+        }
+
+        public bool EditBlog(int id, BlogViewModel blog)
+        {
+            var context = new PortfolioContext();
+            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogID == id);
+            if (entryBlog == null) return false;
+            
+            try
+            {
+                context.Update(entryBlog);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool DeleteBlogById(int id)
+        {           
+            var context = new PortfolioContext();
+            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogID == id);
+
+            context.Blog.Remove(entryBlog);
+
+            context.SaveChanges();
+
+            if (new BlogService().RetrieveBlogVmById(id) != null) return false;
+
+            return true;
         }
     }
 }
