@@ -7,148 +7,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
 using Portfolio.Models;
+using Portfolio.Services;
+using Portfolio.ViewModels;
 
 namespace Portfolio.Controllers
 {
     public class ContactsController : Controller
     {
-        // take out once done configuring services methods
-        private readonly PortfolioContext _context;
-
-        public ContactsController(PortfolioContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Contacts
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Contact.ToListAsync());
-        }
-
-        // GET: Contacts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contact = await _context.Contact
-                .FirstOrDefaultAsync(m => m.ContactId == id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
-
-            return View(contact);
-        }
-
-        // GET: Contacts/Create
-        public IActionResult Create()
+        // GET: Contact Index
+        public IActionResult Index()
         {
             return View();
         }
 
-        // POST: Contacts/Create
+        // POST: Contacts/Index
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContactId,SubmitDate,Name,Email,Subject,Message")] Contact contact)
+        public IActionResult Create(ContactViewModel contact)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contact);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(contact);
-        }
+                var service = new ContactService();
 
-        // GET: Contacts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contact = await _context.Contact.FindAsync(id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
-            return View(contact);
-        }
-
-        // POST: Contacts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContactId,SubmitDate,Name,Email,Subject,Message")] Contact contact)
-        {
-            if (id != contact.ContactId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (!service.SendMessage(contact))
                 {
-                    _context.Update(contact);
-                    await _context.SaveChangesAsync();
+                    ViewBag.Message = "Sorry we are facing problem here, try again.";
+                    return View("Index");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContactExists(contact.ContactId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(contact);
-        }
 
-        // GET: Contacts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                ViewBag.Message = "Thank you for contacting me.";
+                return RedirectToAction("Index");
             }
 
-            var contact = await _context.Contact
-                .FirstOrDefaultAsync(m => m.ContactId == id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
-
-            return View(contact);
-        }
-
-        // POST: Contacts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var contact = await _context.Contact.FindAsync(id);
-            _context.Contact.Remove(contact);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ContactExists(int id)
-        {
-            return _context.Contact.Any(e => e.ContactId == id);
+            return View("Index");
         }
     }
 }
