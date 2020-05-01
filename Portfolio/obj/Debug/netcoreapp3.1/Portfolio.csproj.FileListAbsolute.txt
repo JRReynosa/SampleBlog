@@ -159,11 +159,14 @@ C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\runti
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
-C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.csproj.CoreCompileInputs.cache
-C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Blogs\Create.cshtml.g.cs
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Blogs\Delete.cshtml.g.cs
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Blogs\Details.cshtml.g.cs
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Blogs\Edit.cshtml.g.cs
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Blogs\Index.cshtml.g.cs
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Contacts\Index.cshtml.g.cs
+C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\MailKit.dll
+C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\MimeKit.dll
+C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.csproj.CoreCompileInputs.cache
+C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.MvcApplicationPartsAssemblyInfo.cache

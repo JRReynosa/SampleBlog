@@ -33,7 +33,7 @@ namespace Portfolio.Controllers
 
                 if (!service.SendMessage(contact))
                 {
-                    ViewBag.Message = "Sorry we are facing problem here, try again.";
+                    ViewBag.Message = "Sorry we are facing a problem here, try again.";
                     return View("Index");
                 }
 

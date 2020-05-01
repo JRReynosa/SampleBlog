@@ -29,7 +29,5 @@ namespace Portfolio.Data
                 optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=PortfolioContext-c573351a-817a-461e-8c63-0fde450fc20e;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
-
-        public DbSet<Portfolio.Models.Contact> Contact { get; set; }
     }
 }
