@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Models;
 
 namespace Portfolio.Data
 {
-    public class PortfolioContext : DbContext
+    public class PortfolioContext : IdentityDbContext<IdentityUser>
     {
         public PortfolioContext()
         {
@@ -18,9 +20,12 @@ namespace Portfolio.Data
         {
         }
 
-        public DbSet<Portfolio.Models.Blog> Blog { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-        public DbSet<Portfolio.Models.Comment> Comment { get; set; }
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,5 +34,9 @@ namespace Portfolio.Data
                 optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=PortfolioContext-c573351a-817a-461e-8c63-0fde450fc20e;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
+
+        public DbSet<Portfolio.Models.Blog> Blog { get; set; }
+
+        public DbSet<Portfolio.Models.Comment> Comment { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj": {}
+    "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj": {}
   },
   "projects": {
-    "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj": {
+    "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj",
+        "projectUniqueName": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj",
         "projectName": "Portfolio",
-        "projectPath": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj",
+        "projectPath": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj",
         "packagesPath": "C:\\Users\\reynosaj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\obj\\",
+        "outputPath": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\reynosaj\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -42,6 +42,10 @@
               "target": "Package",
               "version": "[2.6.0, )"
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[3.1.3, )"
@@ -58,7 +62,7 @@
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[3.1.2, )"
             },
             "MimeKit": {
               "target": "Package",

@@ -168,5 +168,11 @@ C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\MailKit.dll
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\MimeKit.dll
 C:\Users\reynosaj\source\repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
-C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.csproj.CoreCompileInputs.cache
-C:\Users\reynosaj\source\repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.csproj.CoreCompileInputs.cache
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Portfolio.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\reynosaj\Source\Repos\Portfolio\Portfolio\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Login.cshtml.g.cs
