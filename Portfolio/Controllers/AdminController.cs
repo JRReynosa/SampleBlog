@@ -13,10 +13,12 @@ namespace Portfolio.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public AdminController(UserManager<IdentityUser> userManager)
+        public AdminController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -34,28 +36,25 @@ namespace Portfolio.Controllers
                 return View(adminModel);
             }
 
-            // Find user
-            var user = await userManager.FindByNameAsync(adminModel.UserName);
-            // If not null and hashed password macthes
-            if (user != null &&
-                await userManager.CheckPasswordAsync(user, adminModel.Password))
+            var result = await signInManager.PasswordSignInAsync(adminModel.UserName, adminModel.Password, false, false);
+            if (result.Succeeded)
             {
-                // Create claim and login
-                var identity = new ClaimsIdentity(IdentityConstants.ApplicationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-                identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-
-                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme,
-                    new ClaimsPrincipal(identity));
-
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
-
             else
             {
                 ModelState.AddModelError("", "Invalid UserName or Password");
                 return View();
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,7 @@ namespace Portfolio.Controllers
         }
 
         // GET: Blogs/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -50,6 +52,7 @@ namespace Portfolio.Controllers
         // POST: Blogs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(BlogViewModel blogViewModel)
@@ -64,6 +67,7 @@ namespace Portfolio.Controllers
         }
 
         // GET: Blogs/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,6 +88,7 @@ namespace Portfolio.Controllers
         // POST: Blogs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, BlogViewModel blog)
@@ -106,6 +111,7 @@ namespace Portfolio.Controllers
         }
 
         // GET: Blogs/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -124,6 +130,7 @@ namespace Portfolio.Controllers
         }
 
         // POST: Blogs/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

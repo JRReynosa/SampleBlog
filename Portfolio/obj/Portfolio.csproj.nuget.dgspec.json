@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj": {}
+    "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj": {}
   },
   "projects": {
-    "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj": {
+    "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj",
+        "projectUniqueName": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj",
         "projectName": "Portfolio",
-        "projectPath": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj",
+        "projectPath": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj",
         "packagesPath": "C:\\Users\\reynosaj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\obj\\",
+        "outputPath": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\reynosaj\\AppData\\Roaming\\NuGet\\NuGet.Config",

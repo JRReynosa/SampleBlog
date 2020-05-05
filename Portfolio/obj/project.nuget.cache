@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aj+hMxSApS23IL9cJrVIqU7ctPtzBwm62mun/pJifGF2bNSCGE2Lfn75tKmK1mMh9k4UTxLs+w416+qKskZCWQ==",
+  "dgSpecHash": "+st19E97odQ5iPn3WYtcRmbYePwoevqXLmErnenjnWVenrK5GpYOC43OWWeeP6loxF23T4/2TH1I6Ga/+z3+9g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\reynosaj\\Source\\Repos\\Portfolio\\Portfolio\\Portfolio.csproj",
+  "projectFilePath": "C:\\Users\\reynosaj\\source\\repos\\Portfolio\\Portfolio\\Portfolio.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\reynosaj\\.nuget\\packages\\mailkit\\2.6.0\\mailkit.2.6.0.nupkg.sha512",
     "C:\\Users\\reynosaj\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.3\\microsoft.aspnetcore.cryptography.internal.3.1.3.nupkg.sha512",
