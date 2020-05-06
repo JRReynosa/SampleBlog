@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
+using Portfolio.Migrations;
 using Portfolio.Models;
 using Portfolio.Services;
 using Portfolio.ViewModels;
@@ -85,6 +86,13 @@ namespace Portfolio.Controllers
             return View(viewModel);
         }
 
+        private readonly PortfolioContext _context;
+
+        public BlogsController(PortfolioContext context)
+        {
+            _context = context;
+        }
+
         // POST: Blogs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -105,7 +113,7 @@ namespace Portfolio.Controllers
                 if (!blogAdded) return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 
                 return RedirectToAction(nameof(Index));
-                
+
             }
             return View(blog);
         }

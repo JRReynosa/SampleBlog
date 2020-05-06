@@ -74,7 +74,18 @@ namespace Portfolio.Services
         public bool EditBlog(int id, BlogViewModel blog)
         {
             var context = new PortfolioContext();
-            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogID == id);
+
+            var entryBlog = new Blog
+            {
+                BlogID = id,
+                Title = blog.Title,
+                // Fix this when time comes, I don't think it turns the CommentVM to type Comment
+                Comments = (List<Comment>) blog.Comments,
+                Tags = blog.Tags,
+                SystemChangeDate = blog.DateSubmitted,
+                Content = blog.Content
+            };
+
             if (entryBlog == null) return false;
             
             try
@@ -85,7 +96,7 @@ namespace Portfolio.Services
             {
                 return false;
             }
-
+            context.SaveChanges();
             return true;
         }
 

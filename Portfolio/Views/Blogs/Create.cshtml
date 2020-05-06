@@ -3,37 +3,46 @@
 @{
     ViewData["Title"] = "Create";
 }
+<!-- Include the Quill library/CSS & highlight.js library/CSS -->
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/monokai-sublime.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
 
 <h1>Create</h1>
 
 <h4>Blog</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-lg-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group col-md-4 p-0">
                 <label asp-for="DateSubmitted" class="control-label"></label>
                 <input asp-for="DateSubmitted" class="form-control" />
                 <span asp-validation-for="DateSubmitted" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4 p-0">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group col-md-4 p-0">
                 <label asp-for="Tags" class="control-label"></label>
                 <input asp-for="Tags" class="form-control" />
                 <span asp-validation-for="Tags" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" type="hidden"/>
+                <!-- Create the editor container -->
+                <div id="editor">
+                </div>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Post" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -43,3 +52,41 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script>
+    // Should I configure hljs?? Look at quilljs docs
+
+    // Initialize Quill editor
+    var toolbarOptions = [
+        [{ 'font': [] }],                                 // dropdown with defaults from theme
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        ['bold', 'italic', 'underline', 'strike', { 'color': [] }, { 'background': [] }],
+
+        [{ 'indent': '-1' }, { 'indent': '+1' }, { 'align': [] }],
+
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+
+        ['blockquote', 'code-block', 'image'],
+
+        ['clean']                                         // remove formatting button
+    ];
+
+    var quill = new Quill('#editor', {
+        modules: {
+            syntax: true,
+            toolbar: toolbarOptions
+        },
+
+        theme: 'snow'
+    });
+
+    // Set content data from Quill
+    $("form").on("submit", function () {
+        console.log($("#Content").val());
+        console.log(quill.getContents()); // Delta
+        console.log(quill.getText()); // Plain Text
+        console.log(quill.root.innerHTML); // HTML Mark Up
+        $("#Content").val(quill.getText());
+    });
+</script>
