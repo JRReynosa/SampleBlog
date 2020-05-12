@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<!-- Include the Quill library/CSS & highlight.js library/CSS -->
+
+<!-- Include the highlight.js library/CSS & Quill library/CSS-->
 <link rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/monokai-sublime.min.css">
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
@@ -36,10 +37,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" type="hidden"/>
+                <input asp-for="Content" class="form-control" type="hidden" />
                 <!-- Create the editor container -->
                 <div id="editor">
-                    @Model.Content
                 </div>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
@@ -49,12 +49,18 @@
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 <script>
+    $(document).ready(function () {
+        var Delta = Quill.import('delta'); // Import delta
+        var json = @Html.Raw(Json.Serialize(Model.Content)); // Bring in the JSON from Model.Content
+        var delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
+        quill.setContents(delta); // Set the contents within the editor based on Delta
+    });
+
     // Should I configure hljs?? Look at quilljs docs
 
     // Initialize Quill editor
@@ -85,10 +91,6 @@
 
     // Set content data from Quill
     $("form").on("submit", function () {
-        console.log($("#Content").val());
-        console.log(quill.getContents()); // Delta
-        console.log(quill.getText()); // Plain Text
-        console.log(quill.root.innerHTML); // HTML Mark Up
-        $("#Content").val(quill.getContents());
+        $("#Content").val(JSON.stringify(quill.getContents())); // Save Model.Content as a stringified JSON from the Delta
     });
 </script>

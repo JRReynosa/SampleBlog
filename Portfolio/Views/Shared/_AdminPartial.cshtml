@@ -6,17 +6,9 @@
     if (SignInManager.IsSignedIn(User))
     {
         <h1 class="text-danger text-center">ADMINISTRATOR</h1>
-        <nav>
-            <div class="justify-content-center">
-                <form class="form-inline justify-content-center" asp-controller="Admin" asp-action="Logout">
-                    <button type="submit" class="nav-link btn btn-link text-info">Logout</button>
-                </form>
-            </div>
-            <div>
-                <a class="nav-link btn btn-link text-info" asp-controller="Blogs" asp-action="Create">New Post</a>
-            </div>
-        </nav>
-
+        <form class="form-inline justify-content-center" asp-controller="Admin" asp-action="Logout">
+            <button type="submit" class="nav-link btn btn-link text-info">Logout</button>
+        </form>
     }
 }
 

@@ -1,4 +1,8 @@
-﻿@model IEnumerable<Portfolio.ViewModels.BlogViewModel>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model IEnumerable<Portfolio.ViewModels.BlogViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,6 +10,12 @@
 
 <h1>Blog</h1>
 
+@{
+    if (SignInManager.IsSignedIn(User))
+    {
+        <a class="text-info h4" asp-controller="Blogs" asp-action="Create">New Post</a>
+    }
+}
 
 <table class="table">
     <thead>
@@ -26,26 +36,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateSubmitted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tags)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BlogID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BlogID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BlogID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateSubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tags)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    <a class="text-dark" asp-action="Details" asp-route-id="@item.BlogID">Blog Details</a>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a class="text-info" asp-action="Edit" asp-route-id="@item.BlogID">Edit</a>
+                        <a class="text-danger" asp-action="Delete" asp-route-id="@item.BlogID">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
