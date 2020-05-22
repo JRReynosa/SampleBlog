@@ -5,7 +5,7 @@
 @model IEnumerable<Portfolio.ViewModels.BlogViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Blog";
 }
 
 <!-- Include the highlight.js library/CSS & Quill library/CSS-->
@@ -24,38 +24,44 @@
     }
 }
 
-@for (int i = 0; i < 3; i++)
+@for (int i = 0; i < Model.Count(); i++)
 {
-<div class="border-bottom">
-    <p class="d-inline display-4">
-        @Html.DisplayFor(item => Model.ElementAt(i).Title)
-    </p>
-    <p class="d-inline text-secondary">
-        @Html.DisplayFor(item => Model.ElementAt(i).DateSubmitted)
-    </p>
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <a class="d-inline text-info" asp-action="Edit" asp-route-id="@Model.ElementAt(i).BlogID">Edit</a>
-        <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogID">Delete</a>
-    }
-    <p class="text-info">
-        Tags: @Html.DisplayFor(item => Model.ElementAt(i).Tags)
-    </p>
-    <!-- Create the editor container -->
-    @{
-        string str = "editor" + i;
-    }
-    <div id="@str">
+    <div class="border-bottom">
+        <p class="d-inline display-4">
+            @Html.DisplayFor(item => Model.ElementAt(i).Title)
+        </p>
+
+        <p class="d-inline text-secondary">
+            @Html.DisplayFor(item => Model.ElementAt(i).DateSubmitted)
+        </p>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="d-inline text-info" asp-action="Edit" asp-route-id="@Model.ElementAt(i).BlogID">Edit</a>
+            <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogID">Delete</a>
+        }
+
+        <p class="text-info">
+            Tags: @Html.DisplayFor(item => Model.ElementAt(i).Tags)
+        </p>
+
+        <!-- Create the editor container -->
+        @{
+            string str = "editor" + i;
+        }
+        <div id="@str">
+        </div>
     </div>
-</div>
 }
+
+<button type="button" class="btn btn-outline-dark btn-block" id="loadMore" onclick="LoadMore()">Load More</button>
 
 <script>
     $(document).ready(function () {
-        var Delta = Quill.import('delta'); // Import delta
-
         // Initialize Quill editors
-        @for (var i = 0; i < 3; i++) {
+        var Delta = Quill.import('delta'); // Import delta
+        @for (var i = 0; i < Model.Count(); i++)
+        {
             <text>
             var str = '#editor' + @i;
             var quill = new Quill(str, {
@@ -63,7 +69,7 @@
                 theme: 'bubble'
             });
 
-            var json = @Html.Raw(Json.Serialize(Model.ElementAt(i).Content.Substring(0))); // Bring in the JSON from Model.Content
+            var json = @Html.Raw(Json.Serialize(Model.ElementAt(i).Content)); // Bring in the JSON from Model.Content
             var delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
             var a = delta.retain(0);
             quill.setContents(a); // Set the contents within the editor based on Delta
@@ -71,4 +77,29 @@
         }
     });
 
+    var loadCount = 1;
+    function LoadMore() {
+        $.ajax({
+            url: "/Blogs/LoadMoreBlog/",
+            data: { count: loadCount * 3 },
+            cache: false,
+            type: "GET",
+            success: function (data) {
+                if (data != null) {
+                    console.log(data);
+                    $(data).insertBefore("#loadMore").hide().fadeIn(2000);
+                    $('.loadScript').css({ "display": "none" });
+
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                alert("message : \n" +
+                    "An error occurred, for more info check the js console" +
+                    "\n status : \n" + status + " \n error : \n" + error);
+            }
+        });
+        loadCount++;
+    }
 </script>

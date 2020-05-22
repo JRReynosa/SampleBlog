@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Portfolio.Data;
-using Portfolio.Migrations;
 using Portfolio.Models;
 using Portfolio.Services;
 using Portfolio.ViewModels;
@@ -20,7 +18,11 @@ namespace Portfolio.Controllers
         // GET: Blogs
         public ActionResult Index()
         {
-            var viewModel = new BlogService().RetrieveBlogs();
+            // Reverse to get in order of latest
+            var blogs = new BlogService().RetrieveBlogs();
+            blogs.Reverse();
+            // Take first three
+            var viewModel = blogs.Take(3);
 
             return View(viewModel);
         }
@@ -41,6 +43,31 @@ namespace Portfolio.Controllers
             }
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult LoadMoreBlog(int count)
+        {
+            try
+            {
+                //  Get blogs & reverse to get in order of latest
+                var blogs = new BlogService().RetrieveBlogs();
+                blogs.Reverse();
+
+                // Skip the blogs already loaded, select next three
+                var model = blogs.Skip(count).Take(3);
+
+                // Set ViewBag for loops in View
+                ViewBag.Count = count; // Blogs skipped
+                ViewBag.BlogCount = model.Count(); // Amount of blogs to display
+
+                return View("_LoadBlog", model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("fail :(" + e);
+                return View("Index");
+            }
         }
 
         // GET: Blogs/Create
