@@ -48,12 +48,16 @@
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 <script>
+    $(document).ready(function () {
+        var Delta = Quill.import('delta'); // Import delta
+        var delta = new Delta().insert('Hello World \n').insert('Had to do this to fix the scroll bar bug \n'); // Parse JSON and create new Delta from it
+        quill.setContents(delta); // Set the contents within the editor based on Delta
+    });
     // Should I configure hljs?? Look at quilljs docs
 
     // Initialize Quill editor
