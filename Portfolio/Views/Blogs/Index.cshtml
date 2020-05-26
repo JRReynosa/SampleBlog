@@ -15,6 +15,31 @@
 <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
 
+<script src="https://kit.fontawesome.com/df8cbb7f66.js" crossorigin="anonymous"></script>
+
+<style>
+    #myBtn {
+        display: none; /* Hidden by default */
+        position: fixed; /* Fixed/sticky position */
+        bottom: 60px; /* Place the button at the bottom of the page */
+        right: 60px; /* Place the button 30px from the right */
+        z-index: 99; /* Make sure it does not overlap */
+        border: none; /* Remove borders */
+        outline: none; /* Remove outline */
+        background-color: black; /* Set a background color */
+        color: white; /* Text color */
+        cursor: pointer; /* Add a mouse pointer on hover */
+        padding: 15px; /* Some padding */
+        border-radius: 10px; /* Rounded corners */
+        font-size: 18px; /* Increase font size */
+    }
+
+        #myBtn:hover {
+            background-color: #555; /* Add a dark-grey background on hover */
+        }
+</style>
+
+
 <h1>Blog</h1>
 
 @{
@@ -41,7 +66,7 @@
             <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogID">Delete</a>
         }
 
-        <p class="text-info">
+        <p class="text-secondary">
             Tags: @Html.DisplayFor(item => Model.ElementAt(i).Tags)
         </p>
 
@@ -51,6 +76,9 @@
         }
         <div id="@str">
         </div>
+        <a class="text-info text-decoration-none" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogID">Read More</a>
+
+        <button id="myBtn" title="Go to top" onclick="topFunction()">Top</button>
     </div>
 }
 
@@ -71,12 +99,18 @@
 
             var json = @Html.Raw(Json.Serialize(Model.ElementAt(i).Content)); // Bring in the JSON from Model.Content
             var delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
-            var a = delta.retain(0);
+            var a = delta.slice(0,100).insert('...');
             quill.setContents(a); // Set the contents within the editor based on Delta
             </text>
         }
+
+        //Get the button:
+        mybutton = document.getElementById("myBtn");
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
     });
 
+    // Load More
     var loadCount = 1;
     function LoadMore() {
         $.ajax({
@@ -101,5 +135,20 @@
             }
         });
         loadCount++;
+    }
+
+    // Scroll to top
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
 </script>

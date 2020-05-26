@@ -36,6 +36,7 @@
         }
         <div id="@str">
         </div>
+        <a class="text-info text-decoration-none" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogID">Read More</a>
     </div>
 }
 
@@ -55,7 +56,7 @@
 
         var json = @Html.Raw(Json.Serialize(Model.ElementAt(i).Content)); // Bring in the JSON from Model.Content
         var delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
-        var a = delta.retain(0);
+        var a = delta.slice(0, 100).insert('...');
         quill.setContents(a); // Set the contents within the editor based on Delta
         </text>
     }

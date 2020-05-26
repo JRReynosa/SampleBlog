@@ -38,7 +38,7 @@ namespace Portfolio.Services
             }
             catch (Exception ex)
             {
-                EventLog.WriteEntry("Sending mail", ex.Message);
+                Console.WriteLine("Sending mail" + ex.Message);
                 return false;
             }
 
