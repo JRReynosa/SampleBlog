@@ -26,7 +26,7 @@
     }
 }
 
-@for (int i = 0; i < Model.Count(); i++)
+@for (var i = 0; i < Model.Count(); i++)
 {
     <div class="border-bottom">
         <p class="d-inline display-4">
@@ -39,8 +39,8 @@
 
         @if (SignInManager.IsSignedIn(User))
         {
-            <a class="d-inline text-info" asp-action="Edit" asp-route-id="@Model.ElementAt(i).BlogID">Edit</a>
-            <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogID">Delete</a>
+            <a class="d-inline text-info" asp-action="Edit" asp-route-id="@Model.ElementAt(i).BlogId">Edit</a>
+            <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogId">Delete</a>
         }
 
         <p class="text-secondary">
@@ -53,10 +53,11 @@
         }
         <div id="@str">
         </div>
-        <a class="text-info text-decoration-none" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogID">Read More</a>
+        <a class="h2 text-info text-decoration-none d-flex justify-content-center" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogId">Read More</a>
     </div>
 }
 
+<br/>
 <button type="button" class="btn btn-outline-dark btn-block" id="loadMore" onclick="LoadMore()">Load More</button>
 
 <script>

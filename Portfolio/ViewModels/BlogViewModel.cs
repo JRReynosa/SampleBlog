@@ -9,15 +9,15 @@ namespace Portfolio.ViewModels
 {
     public class BlogViewModel
     {
-        public int BlogID { get; set; }
+        public int BlogId { get; set; }
         [DisplayName("Date")]
         [DataType(DataType.Date)]
         public DateTime DateSubmitted { get; set; }
-        public String Title { get; set; }
+        public string Title { get; set; }
         //public String Description { get; set; }
-        public String Content { get; set; }
+        public string Content { get; set; }
         // Use MarkdownDocument to parse
-        public String Tags { get; set; }
+        public string Tags { get; set; }
         public ICollection<CommentViewModel> Comments { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Portfolio.ViewModels;
 
 namespace Portfolio.Controllers
 {
-    public class ContactsController : Controller
+    public class ContactController : Controller
     {
         // GET: Contact Index
         public IActionResult Index()
@@ -27,21 +27,18 @@ namespace Portfolio.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ContactViewModel contact)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View("Index");
+
+            var sentMessage = new ContactService().SendMessage(contact);
+
+            if (!sentMessage)
             {
-                var service = new ContactService();
-
-                if (!service.SendMessage(contact))
-                {
-                    ViewBag.Message = "Sorry we are facing a problem here, try again.";
-                    return View("Index");
-                }
-
-                ViewBag.Message = "Thank you for contacting me.";
-                return RedirectToAction("Index");
+                ViewBag.Message = "Sorry we are facing a problem here, try again.";
+                return View("Index");
             }
 
-            return View("Index");
+            ViewBag.Message = "Thank you for contacting me.";
+            return RedirectToAction("Index");
         }
     }
 }

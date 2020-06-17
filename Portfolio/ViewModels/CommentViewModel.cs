@@ -9,7 +9,7 @@ namespace Portfolio.ViewModels
     public class CommentViewModel
     {
         public int CommentId { get; set; }
-        public int BlogID { get; set; }
+        public int BlogId { get; set; }
         [DataType(DataType.Date)]
         public DateTime DateSubmitted { get; set; }
         [Required(ErrorMessage = "Name is required.")]

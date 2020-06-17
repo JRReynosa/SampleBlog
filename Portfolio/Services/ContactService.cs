@@ -5,11 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.Web.CodeGeneration;
 using MimeKit;
-using Portfolio.Data;
-using Portfolio.Models;
 using Portfolio.ViewModels;
 
 namespace Portfolio.Services
@@ -18,15 +14,13 @@ namespace Portfolio.Services
     {
         public bool SendMessage(ContactViewModel viewModel)
         {
-            var msg = new MimeMessage();
-            msg.From.Add(new MailboxAddress(viewModel.Email)); // Email which you are getting from contact us page 
-            msg.Subject = viewModel.Subject;
-            msg.Body = new TextPart("plain")
+            var msg = new MimeMessage
             {
-                Text = viewModel.Message
+                From = { new MailboxAddress(viewModel.Email) },
+                Subject = viewModel.Subject,
+                Body = new TextPart("plain") { Text = viewModel.Message },
+                To = { new MailboxAddress("jonathanreynosa19@gmail.com") }
             };
-
-            msg.To.Add(new MailboxAddress("jonathanreynosa19@gmail.com")); // Where mail will be sent 
 
             var smtp = new SmtpClient();
 
@@ -38,7 +32,7 @@ namespace Portfolio.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Sending mail" + ex.Message);
+                Console.WriteLine("Error sending mail:" + ex.Message);
                 return false;
             }
 

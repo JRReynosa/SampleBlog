@@ -10,6 +10,7 @@
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
 <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="/js/image-resize.min.js"></script>
 
 <h1>Edit Post</h1>
 
@@ -19,7 +20,7 @@
     <div class="col-lg-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BlogID" />
+            <input type="hidden" asp-for="BlogId" />
             <div class="form-group col-md-4 p-0">
                 <label asp-for="DateSubmitted" class="control-label"></label>
                 <input asp-for="DateSubmitted" class="form-control" />
@@ -81,12 +82,14 @@
     ];
 
     var quill = new Quill('#editor', {
+        theme: 'snow',
         modules: {
+            imageResize: {
+                displaySize: true
+            },
             syntax: true,
             toolbar: toolbarOptions
-        },
-
-        theme: 'snow'
+        }
     });
 
     // Set content data from Quill

@@ -8,7 +8,7 @@ namespace Portfolio.Models
     public class Comment
     {
         public int CommentId { get; set; }
-        public int BlogID { get; set; }
+        public int BlogId { get; set; }
         public DateTime DateSubmitted { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

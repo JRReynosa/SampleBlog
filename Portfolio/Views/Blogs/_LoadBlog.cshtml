@@ -21,14 +21,14 @@
 
         @if (SignInManager.IsSignedIn(User))
         {
-            <a class="d-inline text-info" asp-action="Edit" asp-route-id="@Model.ElementAt(i).BlogID">Edit</a>
-            <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogID">Delete</a>
+            <a class="d-inline text-info" asp-action="Edit" asp-route-id="@Model.ElementAt(i).BlogId">Edit</a>
+            <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogId">Delete</a>
         }
 
         <p class="text-info">
             Tags: @Html.DisplayFor(item => Model.ElementAt(i).Tags)
         </p>
-
+       d
         <!-- Create the editor container -->
         @{
             var num = i + ViewBag.Count;
@@ -36,7 +36,7 @@
         }
         <div id="@str">
         </div>
-        <a class="text-info text-decoration-none" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogID">Read More</a>
+        <a class="text-info text-decoration-none" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogId">Read More</a>
     </div>
 }
 

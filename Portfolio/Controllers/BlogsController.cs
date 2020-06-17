@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Data;
 using Portfolio.Models;
 using Portfolio.Services;
 using Portfolio.ViewModels;
@@ -30,17 +29,11 @@ namespace Portfolio.Controllers
         // GET: Blogs/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var viewModel = new BlogService().RetrieveBlogVmById(id);
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
+            if (viewModel == null) return NotFound();
 
             return View(viewModel);
         }
@@ -85,39 +78,26 @@ namespace Portfolio.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BlogViewModel blogViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                new BlogService().CreateBlog(blogViewModel);
+            if (!ModelState.IsValid) return View(blogViewModel);
 
-                return RedirectToAction(nameof(Index));
-            }
-            return View(blogViewModel);
+            var blogCreated = new BlogService().CreateBlog(blogViewModel);
+
+            if (!blogCreated) RedirectToAction(nameof(Error));
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Blogs/Edit/5
         [Authorize]
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var viewModel = new BlogService().RetrieveBlogVmById(id);
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
+            if (viewModel == null) return NotFound();
 
             return View(viewModel);
-        }
-
-        private readonly PortfolioContext _context;
-
-        public BlogsController(PortfolioContext context)
-        {
-            _context = context;
         }
 
         // POST: Blogs/Edit/5
@@ -128,38 +108,26 @@ namespace Portfolio.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, BlogViewModel blog)
         {
-            if (id != blog.BlogID)
-            {
-                return NotFound();
-            }
+            if (!ModelState.IsValid) return View(blog);
 
-            if (ModelState.IsValid)
-            {
-                var blogAdded = new BlogService().EditBlog(id, blog);
+            if (id != blog.BlogId) return NotFound();
 
-                if (!blogAdded) return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var blogEdited = new BlogService().EditBlog(id, blog);
 
-                return RedirectToAction(nameof(Index));
+            if (!blogEdited) RedirectToAction(nameof(Error));
 
-            }
-            return View(blog);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Blogs/Delete/5
         [Authorize]
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var viewModel = new BlogService().RetrieveBlogVmById(id);
 
-            if (viewModel == null)
-            {
-                return NotFound();
-            }
+            if (viewModel == null) return NotFound();
 
             return View(viewModel);
         }
@@ -172,9 +140,16 @@ namespace Portfolio.Controllers
         {
             var blogDeleted = new BlogService().DeleteBlogById(id);
 
-            if (!blogDeleted) return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (!blogDeleted) RedirectToAction(nameof(Error));
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel
+                { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

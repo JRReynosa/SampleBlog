@@ -35,8 +35,8 @@ namespace Portfolio.Data
             }
         }
 
-        public DbSet<Portfolio.Models.Blog> Blog { get; set; }
+        public DbSet<Blog> Blog { get; set; }
 
-        public DbSet<Portfolio.Models.Comment> Comment { get; set; }
+        public DbSet<Comment> Comment { get; set; }
     }
 }

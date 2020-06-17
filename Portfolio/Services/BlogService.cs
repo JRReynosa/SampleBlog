@@ -14,16 +14,15 @@ namespace Portfolio.Services
         public List<BlogViewModel> RetrieveBlogs()
         {
             var context = new PortfolioContext();
-            var listOfBlogs = new List<BlogViewModel>();
-            var query = context.Blog.ToList();
-            listOfBlogs = query.Select(x => new BlogViewModel
+            var query = context.Blog.AsNoTracking();
+            var listOfBlogs = query.Select(x => new BlogViewModel
             {
-                BlogID = x.BlogID,
+                BlogId = x.BlogId,
                 DateSubmitted = x.SystemChangeDate,
                 Title = x.Title,
                 Content = x.Content,
                 Tags = x.Tags,
-                Comments = this.RetrieveComments(x.BlogID)
+                Comments = new BlogService().RetrieveComments(x.BlogId)
             }).ToList();
             return listOfBlogs;
         }
@@ -31,19 +30,18 @@ namespace Portfolio.Services
         public BlogViewModel RetrieveBlogVmById(int? id)
         {
             var listOfVmBlogs = new BlogService().RetrieveBlogs();
-            var returnBlog = listOfVmBlogs.FirstOrDefault(x => x.BlogID == id);
+            var returnBlog = listOfVmBlogs.FirstOrDefault(x => x.BlogId == id);
             return returnBlog;
         }
 
         public List<CommentViewModel> RetrieveComments(int blogId)
         {
             var context = new PortfolioContext();
-            var listOfComments = new List<CommentViewModel>();
-            var query = context.Comment.ToList();
-            listOfComments = query.Where(x => x.BlogID == blogId).Select(x => new CommentViewModel
+            var query = context.Comment.AsNoTracking();
+            var listOfComments = query.Where(x => x.BlogId == blogId).Select(x => new CommentViewModel
             {
                 CommentId = x.CommentId,
-                BlogID = x.BlogID,
+                BlogId = x.BlogId,
                 DateSubmitted = x.DateSubmitted,
                 Name = x.Name,
                 Email = x.Email,
@@ -58,7 +56,7 @@ namespace Portfolio.Services
             var context = new PortfolioContext();
             var entryBlog = new Blog
             {
-                BlogID = blog.BlogID,
+                BlogId = blog.BlogId,
                 SystemChangeDate = blog.DateSubmitted,
                 Title = blog.Title,
                 Content = blog.Content,
@@ -67,7 +65,7 @@ namespace Portfolio.Services
             context.Add(entryBlog);
             context.SaveChanges();
 
-            if (new BlogService().RetrieveBlogVmById(blog.BlogID) == null) return false;
+            if (new BlogService().RetrieveBlogVmById(blog.BlogId) == null) return false;
             return true;
         }
 
@@ -77,7 +75,7 @@ namespace Portfolio.Services
 
             var entryBlog = new Blog
             {
-                BlogID = id,
+                BlogId = id,
                 Title = blog.Title,
                 // Fix this when time comes, I don't think it turns the CommentVM to type Comment
                 Comments = (List<Comment>) blog.Comments,
@@ -86,8 +84,6 @@ namespace Portfolio.Services
                 Content = blog.Content
             };
 
-            if (entryBlog == null) return false;
-            
             try
             {
                 context.Update(entryBlog);
@@ -103,7 +99,7 @@ namespace Portfolio.Services
         public bool DeleteBlogById(int id)
         {           
             var context = new PortfolioContext();
-            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogID == id);
+            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogId == id);
 
             context.Blog.Remove(entryBlog);
 
