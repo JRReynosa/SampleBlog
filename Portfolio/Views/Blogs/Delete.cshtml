@@ -55,14 +55,14 @@
 
 <script>
     $(document).ready(function () {
-    var Delta = Quill.import('delta'); // Import delta
-    var json = @Html.Raw(Json.Serialize(Model.Content)); // Bring in the JSON from Model.Content
-    var delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
+    const Delta = Quill.import('delta'); // Import delta
+    const json = @Html.Raw(Json.Serialize(Model.Content)); // Bring in the JSON from Model.Content
+    const delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
     quill.setContents(delta); // Set the contents within the editor based on Delta
     });
 
     // Initialize Quill editor
-    var quill = new Quill('#editor', {
+    const quill = new Quill('#editor', {
         readOnly: true,
         theme: 'bubble'
     });

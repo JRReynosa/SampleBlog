@@ -45,31 +45,28 @@ namespace Portfolio.Services
                 DateSubmitted = x.DateSubmitted,
                 Name = x.Name,
                 Email = x.Email,
-                CommentText = x.CommentText,
-                Likes = x.Likes
+                CommentText = x.CommentText
             }).ToList();
             return listOfComments;
         }
 
-        public bool CreateBlog(BlogViewModel blog)
+        public void CreateBlog(BlogViewModel blog)
         {
             var context = new PortfolioContext();
             var entryBlog = new Blog
             {
                 BlogId = blog.BlogId,
-                SystemChangeDate = blog.DateSubmitted,
+                DateSubmitted = blog.DateSubmitted,
+                SystemChangeDate = DateTime.Today,
                 Title = blog.Title,
                 Content = blog.Content,
                 Tags = blog.Tags
             };
             context.Add(entryBlog);
             context.SaveChanges();
-
-            if (new BlogService().RetrieveBlogVmById(blog.BlogId) == null) return false;
-            return true;
         }
 
-        public bool EditBlog(int id, BlogViewModel blog)
+        public void EditBlog(int id, BlogViewModel blog)
         {
             var context = new PortfolioContext();
 
@@ -77,37 +74,51 @@ namespace Portfolio.Services
             {
                 BlogId = id,
                 Title = blog.Title,
-                // Fix this when time comes, I don't think it turns the CommentVM to type Comment
-                Comments = (List<Comment>) blog.Comments,
                 Tags = blog.Tags,
-                SystemChangeDate = blog.DateSubmitted,
+                DateSubmitted = blog.DateSubmitted,
+                SystemChangeDate = DateTime.Today,
                 Content = blog.Content
             };
 
-            try
-            {
-                context.Update(entryBlog);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return false;
-            }
+            context.Update(entryBlog);
             context.SaveChanges();
-            return true;
         }
 
-        public bool DeleteBlogById(int id)
+        public void DeleteBlogById(int commentId)
         {           
             var context = new PortfolioContext();
-            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogId == id);
+            var entryBlog = context.Blog.FirstOrDefault(x => x.BlogId == commentId);
 
             context.Blog.Remove(entryBlog);
-
             context.SaveChanges();
-
-            if (new BlogService().RetrieveBlogVmById(id) != null) return false;
-
-            return true;
         }
+
+        #region Comments
+
+        public void CreateComment(CommentViewModel comment)
+        {
+            var context = new PortfolioContext();
+            var entryComment = new Comment()
+            {
+                BlogId = comment.BlogId,
+                DateSubmitted = comment.DateSubmitted,
+                Name = comment.Name,
+                Email = comment.Email,
+                CommentText = comment.CommentText
+            };
+            context.Add(entryComment);
+            context.SaveChanges();
+        }
+
+        public void DeleteCommentById(int commentId)
+        {
+            var context = new PortfolioContext();
+            var entryComment = context.Comment.FirstOrDefault(x => x.CommentId == commentId);
+
+            context.Comment.Remove(entryComment);
+            context.SaveChanges();
+        }
+
+        #endregion
     }
 }

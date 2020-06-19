@@ -80,9 +80,7 @@ namespace Portfolio.Controllers
         {
             if (!ModelState.IsValid) return View(blogViewModel);
 
-            var blogCreated = new BlogService().CreateBlog(blogViewModel);
-
-            if (!blogCreated) RedirectToAction(nameof(Error));
+            new BlogService().CreateBlog(blogViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -112,9 +110,7 @@ namespace Portfolio.Controllers
 
             if (id != blog.BlogId) return NotFound();
 
-            var blogEdited = new BlogService().EditBlog(id, blog);
-
-            if (!blogEdited) RedirectToAction(nameof(Error));
+            new BlogService().EditBlog(id, blog);
 
             return RedirectToAction(nameof(Index));
         }
@@ -138,12 +134,34 @@ namespace Portfolio.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var blogDeleted = new BlogService().DeleteBlogById(id);
-
-            if (!blogDeleted) RedirectToAction(nameof(Error));
+            new BlogService().DeleteBlogById(id);
 
             return RedirectToAction(nameof(Index));
         }
+
+        #region Comment
+
+        // POST: New Comment
+        [HttpPost]
+        public ActionResult CreateComment(CommentViewModel comment)
+        {
+            if (!ModelState.IsValid) return View(nameof(Details), new BlogService().RetrieveBlogVmById(comment.BlogId));
+
+            new BlogService().CreateComment(comment);
+
+            return RedirectToAction(nameof(Details),  new  {id = comment.BlogId });
+        }
+
+        // POST: Delete Comment
+        [HttpPost]
+        public ActionResult DeleteComment(CommentViewModel comment)
+        {
+            new BlogService().DeleteCommentById(comment.CommentId);
+
+            return RedirectToAction(nameof(Details), new { id = comment.BlogId });
+        }
+
+        #endregion
 
         [AllowAnonymous]
         public IActionResult Error()

@@ -9,6 +9,7 @@ namespace Portfolio.Models
     {
         public int BlogId { get; set; }
         public DateTime SystemChangeDate { get; set; }
+        public DateTime DateSubmitted { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Tags { get; set; }

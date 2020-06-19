@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Linq
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @model Portfolio.ViewModels.BlogViewModel
@@ -12,9 +13,10 @@
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/monokai-sublime.min.css">
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
 <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
 
-<a class="text-info text-decoration-none" asp-action="Index">Back to Posts</a>
+<a class="h2 text-secondary text-decoration-none" asp-action="Index">Back to Blogs</a>
 
 <div class="border-bottom">
     <h1 class="d-inline display-4">@Html.DisplayFor(model => model.Title)</h1>
@@ -35,21 +37,126 @@
 </div>
 
 <!-- Create the editor container -->
-<div id="editor">
+<div class="border-bottom" id="blogEditor">
+</div>
+
+<div id="discussion">
+    <h1 class="display-4"> Discussion </h1>
+
+    <input type="button" class="btn btn-dark is-medium d-inline-block" value="Add Comment" onclick="DisplaySearch()" />
+
+    <form id="discussForm" asp-action="CreateComment">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group col-md-4 p-0">
+            <input asp-for="Comments.FirstOrDefault().BlogId" value="@Model.BlogId" class="form-control" type="hidden" />
+            <input asp-for="Comments.FirstOrDefault().DateSubmitted" value="@DateTime.Today" class="form-control" type="hidden" />
+        </div>
+        <div class="form-group col-md-4 p-0">
+            <label asp-for="Comments.FirstOrDefault().Name" class="control-label"></label>
+            <input asp-for="Comments.FirstOrDefault().Name" value="" class="form-control" />
+            <span asp-validation-for="Comments.FirstOrDefault().Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4 p-0">
+            <label asp-for="Comments.FirstOrDefault().Email" class="control-label"></label>
+            <input asp-for="Comments.FirstOrDefault().Email" value="" class="form-control" />
+            <span asp-validation-for="Comments.FirstOrDefault().Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comments.FirstOrDefault().CommentText" class="control-label"></label>
+            <input asp-for="Comments.FirstOrDefault().CommentText" class="form-control" type="hidden" />
+            <!-- Create the editor container -->
+            <div id="newCommentEditor">
+            </div>
+            <span asp-validation-for="Comments.FirstOrDefault().CommentText" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Post" class="btn btn-dark" />
+        </div>
+    </form>
+
+    <div class="container border-top mt-3">
+        @for (var i = 0; i < Model.Comments.Count(); i++)
+        {
+            <div class="row border-bottom">
+                <div class="col-sm">
+                    <p class="h5">@Html.DisplayFor(x => Model.Comments.ElementAt(i).Name)</p>
+                    <p class="text-secondary">@Html.DisplayFor(x => Model.Comments.ElementAt(i).DateSubmitted)</p>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <form asp-action="DeleteComment">
+                            <input asp-for="Comments.FirstOrDefault().BlogId" value="@Model.BlogId" class="form-control" type="hidden" />
+                            <input asp-for="Comments.FirstOrDefault().CommentId" value="@Model.Comments.ElementAt(i).CommentId" class="form-control" type="hidden"/>
+                            <input type="submit" class="btn btn-danger mb-2" value="Delete"/>
+                        </form>
+                    }
+                </div>
+                <div class="col-10">
+                    <!-- Create the editor container -->
+                    @{ var str = "commentEditor" + i; }
+                    <div id="@str">
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
 <script>
     $(document).ready(function () {
-    var Delta = Quill.import('delta'); // Import delta
-    var json = @Html.Raw(Json.Serialize(Model.Content)); // Bring in the JSON from Model.Content
-    var delta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
-    quill.setContents(delta); // Set the contents within the editor based on Delta
+        var Delta = Quill.import('delta'); // Import delta
+        var json = @Html.Raw(Json.Serialize(Model.Content)); // Bring in the JSON from Model.Content
+        var blogDelta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
+        blogQuill.setContents(blogDelta); // Set the contents within the editor based on Delta
+
+        // Initialize Quill existing comment editors
+        @for (var i = 0; i < Model.Comments.Count(); i++)
+        {
+            <text>
+                var str = '#commentEditor' + @i;
+                var quill = new Quill(str, {
+                    readOnly: true,
+                    theme: 'bubble'
+                });
+
+                var json = @Html.Raw(Json.Serialize(Model.Comments.ElementAt(i).CommentText)); // Bring in the JSON from Model.Content
+                var commentDelta = new Delta(JSON.parse(json)); // Parse JSON and create new Delta from it
+                quill.setContents(commentDelta); // Set the contents within the editor based on Delta
+            </text>
+    }
+
+        $('#discussForm').hide();
+        $('#discussForm').attr("show", "false");
     });
 
-    // Initialize Quill editor
-    var quill = new Quill('#editor', {
+    // Initialize Quill blog editor
+    var blogQuill = new Quill('#blogEditor', {
         readOnly: true,
         theme: 'bubble'
     });
 
+    // Initialize Quill new comment editor
+    var newCommentQuill = new Quill('#newCommentEditor', {
+        modules: {
+            syntax: true,
+            toolbar: ['bold', 'italic', 'code-block', 'image']
+        },
+
+        theme: 'snow'
+    });
+
+    // Set content data from Quill
+    $("#discussForm").on("submit", function () {
+        $("#CommentText").val(JSON.stringify(newCommentQuill.getContents())); // Save Model.Content as a stringified JSON from the Delta
+    });
+
+    function DisplaySearch() {
+        if ($('#discussForm').attr("show") === "true") {
+            $('#discussForm').hide();
+            $('#discussForm').attr("show", "false");
+        }
+        else {
+            $('#discussForm').show();
+            $('#discussForm').attr("show", "true");
+        }
+    }
 </script>

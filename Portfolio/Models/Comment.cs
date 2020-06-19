@@ -13,6 +13,5 @@ namespace Portfolio.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string CommentText { get; set; }
-        public int Likes { get; set; }
     }
 }

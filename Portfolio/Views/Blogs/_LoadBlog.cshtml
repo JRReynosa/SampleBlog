@@ -8,7 +8,7 @@
 
 @model IEnumerable<Portfolio.ViewModels.BlogViewModel>
 
-@for (int i = 0; i < ViewBag.BlogCount; i++)
+@for (var i = 0; i < ViewBag.BlogCount; i++)
 {
     <div class="border-bottom">
         <p class="d-inline display-4">
@@ -25,10 +25,10 @@
             <a class="d-inline text-danger" asp-action="Delete" asp-route-id="@Model.ElementAt(i).BlogId">Delete</a>
         }
 
-        <p class="text-info">
+        <p class="text-secondary">
             Tags: @Html.DisplayFor(item => Model.ElementAt(i).Tags)
         </p>
-       d
+
         <!-- Create the editor container -->
         @{
             var num = i + ViewBag.Count;
@@ -36,7 +36,7 @@
         }
         <div id="@str">
         </div>
-        <a class="text-info text-decoration-none" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogId">Read More</a>
+        <a class="h2 text-secondary text-decoration-none d-flex justify-content-center" asp-action="Details" asp-route-id="@Model.ElementAt(i).BlogId">Read More</a>
     </div>
 }
 

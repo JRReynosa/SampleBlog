@@ -21,7 +21,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group col-md-4 p-0">
                 <label asp-for="DateSubmitted" class="control-label"></label>
-                <input asp-for="DateSubmitted" class="form-control" />
+                <input asp-for="DateSubmitted" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="DateSubmitted" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4 p-0">
@@ -72,7 +72,7 @@
 
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
 
-        ['blockquote', 'code-block', 'image'],
+        ['blockquote', 'code-block', 'image', 'video'],
 
         ['clean']                                         // remove formatting button
     ];

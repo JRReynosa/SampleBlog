@@ -17,7 +17,7 @@ namespace Portfolio.ViewModels
         [EmailAddress]
         [Required(ErrorMessage = "Email is required.")]
         public string Email { get; set; }
+        [Display(Name = "Comment")]
         public string CommentText { get; set; }
-        public int Likes { get; set; }
     }
 }

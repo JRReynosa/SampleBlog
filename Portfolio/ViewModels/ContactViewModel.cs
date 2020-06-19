@@ -8,8 +8,6 @@ namespace Portfolio.ViewModels
 {
     public class ContactViewModel
     {
-        public int ContactId { get; set; }
-        public DateTime SubmitDate { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

@@ -14,9 +14,7 @@ namespace Portfolio.ViewModels
         [DataType(DataType.Date)]
         public DateTime DateSubmitted { get; set; }
         public string Title { get; set; }
-        //public String Description { get; set; }
         public string Content { get; set; }
-        // Use MarkdownDocument to parse
         public string Tags { get; set; }
         public ICollection<CommentViewModel> Comments { get; set; }
     }
